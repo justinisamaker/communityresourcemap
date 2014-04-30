@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet/less" type="text/css" href="css/main.less">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.0/less.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCapHdhr_ZjVtziwmTejsalZVJDQIZu5c&sensor=false"></script>
+        <!--[if lt IE 9]>
+            <script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+      <div id="outerContainer">
+        <div class="row">
+          <h1 id="title" class="col-lg-12">CommunityAssetMap.org</h1>
+        </div>
+        <div class="row">
+          <div id="intro" class="col-lg-12">
+            <h2>I'm looking for resources related to:</h2>
+            <div id="main-filter" class="btn-group">
+              <div data-filter="*" class="btn btn-default filter-btn">Everything</div>
+              <div data-filter=".food" class="btn btn-default filter-btn">Food</div>
+              <div data-filter=".physical-activity" class="btn btn-default filter-btn">Physical Activity</div>
+              <div data-filter=".mental-health" class="btn btn-default filter-btn">Mental Heath</div>
+              <div data-filter=".health-care" class="btn btn-default filter-btn">Health Care</div>
+              <div data-filter=".connecting-people" class="btn btn-default filter-btn">Connecting People</div>
+              <div data-filter=".education" class="btn btn-default filter-btn">Education</div>
+              <div data-filter=".social-services" class="btn btn-default filter-btn">Social Services</div>
+              <div data-filter=".sexual-health" class="btn btn-default filter-btn">Sexual Health</div>
+              <div data-filter=".substance-abuse" class="btn btn-default filter-btn">Substance Abuse</div>
+              <div data-filter=".dental-care" class="btn btn-default filter-btn">Dental Care</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="mainContainer" class="col-lg-12"></div>
+        </div>
+        <div id="reportContainer" class="row">
+          <div id="reportHeader">
+            <h2>Personalized Report</h2>
+            <button id="print-page" class="btn btn-default">Print <i class="glyphicon glyphicon-print"></i></button>
+          </div>
+          <ul id="reportItems" class="col-lg-7">
+            <p class="no-results">No resources added yet.</p>
+          </ul>
+          <div id="mapContainer" class="col-lg-5"></div>
+        </div>
+      </div>
+
+      <script type="text/template" id="resource-list">
+        <ul class="item-list"></ul>
+      </script>
+
+      <script type="text/template" id="resource">
+        <div class="inner-item" data-id="<%= uniqueid %>">
+          <div class="item-header row">
+            <h3 class="name col-lg-10"><%= resourcename %></h3>
+            <button class="btn btn-default col-lg-1 add-item" value="Add" data-toggle="tooltip" data-placement="left" title="Add to Report"><span>&plus;</span></button>
+          </div>
+          <div class="row item-body">
+            <p class="category">Category: <%= category %></p>
+            <p class="address">Address: <%= address %></p>
+            <a href="<%= website %>" target="_blank" class="website">Click here to visit <%= resourcename %>&#39;s website</a>
+            <p class="description"><%= description %></p>
+            <button class="btn btn-default more-info-button" data-toggle="collapse" data-target="#more-info-<%= uniqueid %>">More Info</button>
+            <div id="more-info-<%= uniqueid %>" class="collapse more-info">
+              <p class="other-contact"><%= othercontact %></p>
+              <p class="eligibility-requirements"><%= eligibilityrequirements %></p>
+              <p class="hours"><%= hours %></p>
+              <p class="languages"><%= languages %></p>
+              <p class="medical-services"><%= medicalservices %></p>
+              <p class="fees"><%= fees %></p>
+              <p class="other-information"><%= otherinformation %></p>
+            </div>
+          </div>
+        </div>
+      </script>
+
+      <script type="text/template" id="report-item">
+        <div class="inner-item" data-id="<%= uniqueid %>">
+          <h3 class="name"><%= resourcename %></h3>
+          <p class="address"><%= address %></p>
+          <p class="phone"><%= phonenumber %></p>
+          <p class="website"><%= website %></p>
+          <p class="other-contact"><%= othercontact %></p>
+          <p class="category"><%= category %></p>
+          <p class="description"><%= description %></p>
+          <p class="eligibility-requirements"><%= eligibilityrequirements %></p>
+          <p class="hours"><%= hours %></p>
+          <p class="languages"><%= languages %></p>
+          <p class="medical-services"><%= medicalservices %></p>
+          <p class="fees"><%= fees %></p>
+          <p class="other-information"><%= otherinformation %></p>
+        </div>
+      </script>
+
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/lib/jquery-1.10.1.min.js"><\/script>')</script>
+      <script src="js/lib/bootstrap.min.js" type="text/javascript"></script>
+      <script src="js/lib/underscore-min.js" type="text/javascript"></script>
+      <script src="js/lib/backbone-min.js" type="text/javascript"></script>
+      <script src="js/lib/masonry.min.js" type="text/javascript"></script>
+      <script src="js/main.js"></script>
+      <script>
+          var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+          (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+          g.src='//www.google-analytics.com/ga.js';
+          s.parentNode.insertBefore(g,s)}(document,'script'));
+      </script>
+    </body>
+</html>
